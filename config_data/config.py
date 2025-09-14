@@ -9,5 +9,6 @@ else:
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 USER_ID = os.getenv("USER_ID")
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+MAX_HISTORY_LENGTH = os.getenv("MAX_HISTORY_LENGTH")
 
 # OPENROUTER_TOKEN = os.getenv('OPENROUTER_TOKEN')

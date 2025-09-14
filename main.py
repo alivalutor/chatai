@@ -3,6 +3,7 @@ from telebot import TeleBot
 import time
 from config_data.config import BOT_TOKEN
 from api import gemini
+from services.chat_context import context_for_ai
 from services.user_check import is_user_allowed
 
 assert BOT_TOKEN is not None, "BOT_TOKEN должен быть инициализирован и иметь значение!"
@@ -15,7 +16,8 @@ def echo_all(message):
     if not is_user_allowed(message.from_user.id):
         bot.reply_to(message, "Извините, у вас нет доступа к этому боту.")
         return
-    result = gemini.request_ai(message.text)
+    history_context = context_for_ai(message.from_user.id, message.text)
+    result = gemini.request_ai(message.from_user.id, history_context)
     try:
         for part in result:
             bot.send_message(message.chat.id, part, parse_mode="Markdown")
