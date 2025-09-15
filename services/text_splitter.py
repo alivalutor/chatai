@@ -28,5 +28,4 @@ def split_into_blocks(text):
     if current_part:
         parts.append(current_part)
 
-    write_log(parts, "raw_blocks.log")
     return parts
