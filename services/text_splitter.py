@@ -1,4 +1,7 @@
+from os import write
 import re
+
+from services.logging import write_log
 
 
 def split_into_blocks(text):
@@ -25,4 +28,5 @@ def split_into_blocks(text):
     if current_part:
         parts.append(current_part)
 
+    write_log(parts, "raw_blocks.log")
     return parts

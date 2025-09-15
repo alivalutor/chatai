@@ -1,8 +1,8 @@
 import requests
-from telebot import TeleBot
 import time
-from config_data.config import BOT_TOKEN
+from telebot import TeleBot
 from api import gemini
+from config_data.config import BOT_TOKEN
 from services.chat_context import context_for_ai
 from services.user_check import is_user_allowed
 
@@ -22,7 +22,7 @@ def echo_all(message):
         for part in result:
             bot.send_message(message.chat.id, part, parse_mode="Markdown")
     except Exception as e:
-        bot.reply_to(message, f"Ошибка при запросе к ИИ: {str(e)}")
+        bot.reply_to(message, f"Ошибка при отправке сообщения от ИИ:'\n'{str(e)}")
 
 
 if __name__ == "__main__":

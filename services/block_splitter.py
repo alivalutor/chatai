@@ -1,6 +1,8 @@
 import re
 from math import ceil
 
+from services.logging import write_log
+
 MAX_MESSAGE_LENGTH = 3900
 
 
@@ -13,7 +15,6 @@ def size_parts(block):
     else:
         k = ceil(len(block) / max_length)
         size = len(block) // k
-    print(size)
     return size
 
 
@@ -58,10 +59,10 @@ def split_by_length(blocks):
             txt_split.append(block)
         else:
             match_obj = pattern_lang.match(block)
-            assert match_obj is not None, "pattern_lang.match(block) is None"
             if match_obj:
                 lang_pre = match_obj.group(0)
                 txt_split = split_code(txt_split, block, lang_pre)
             else:
                 txt_split = split_txt(txt_split, block)
+    write_log(txt_split, "blocks.log")
     return txt_split
