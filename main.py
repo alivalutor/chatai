@@ -21,8 +21,13 @@ def echo_all(message):
     max_retries = 3
     delay = 5
 
+    thinking_message = bot.send_message(message.chat.id, "ИИ готовит ответ...")
+    bot.send_chat_action(message.chat.id, "typing")
+
     history_context = context_for_ai(message.from_user.id, message.text)
     result = gemini.request_ai(message.from_user.id, history_context)
+
+    bot.delete_message(thinking_message.chat.id, thinking_message.message_id)
 
     for attempt in range(max_retries):
         try:

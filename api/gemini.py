@@ -8,6 +8,8 @@ from services.text_cleaner import clean_text
 from services.text_splitter import split_into_blocks
 from services.block_splitter import split_by_length
 
+client = genai.Client()
+
 
 def edit_markdown(text):
     txt_clean = clean_text(text)
@@ -18,7 +20,6 @@ def edit_markdown(text):
 
 
 def request_ai(user_id, message):
-    client = genai.Client()
     try:
         response = client.models.generate_content(
             model="gemini-2.5-flash", contents=message
@@ -35,7 +36,5 @@ def request_ai(user_id, message):
     except Unauthenticated as e:
         print(f"Ошибка 401: {e}")
         raise ValueError("Проблема с API-ключом")
-    # except Exception as e:
-    #     parts_msg = [f"Ошибка при запросе к ИИ: {str(e)}"]
 
     return parts_msg
