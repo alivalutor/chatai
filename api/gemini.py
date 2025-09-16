@@ -24,6 +24,7 @@ def request_ai(user_id, message):
             model="gemini-2.5-flash", contents=message
         )
         add_ai_response_to_history(user_id, response.text)
+        write_log(response.text, "response.log")
         parts_msg = edit_markdown(response.text)
     except ServiceUnavailable as e:
         print(f"Ошибка 503: {e}")
@@ -34,7 +35,7 @@ def request_ai(user_id, message):
     except Unauthenticated as e:
         print(f"Ошибка 401: {e}")
         raise ValueError("Проблема с API-ключом")
-    except Exception as e:
-        parts_msg = [f"Ошибка при запросе к ИИ: {str(e)}"]
+    # except Exception as e:
+    #     parts_msg = [f"Ошибка при запросе к ИИ: {str(e)}"]
 
     return parts_msg

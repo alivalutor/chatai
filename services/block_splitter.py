@@ -64,5 +64,5 @@ def split_by_length(blocks):
                 txt_split = split_code(txt_split, block, lang_pre)
             else:
                 txt_split = split_txt(txt_split, block)
-
+    write_log(txt_split, "blocks.log")
     return txt_split
