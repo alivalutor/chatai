@@ -1,5 +1,7 @@
 import re
 
+from services.logging import write_log
+
 
 def clean_text(text):
 
@@ -16,10 +18,18 @@ def clean_text(text):
 
     txt = re.sub(r"(?m)^(\s*)\*(\s+)", replace_asterisk, txt)
 
-    txt = re.sub(r"###", "\U000025ab\U0000fe0f", txt)
+    txt = re.sub(r"####", "\U00002022", txt)
+    txt = re.sub(r"###", "\U00002022", txt)
+    txt = re.sub(r"##", "\U000025aa\U0000fe0f", txt)
+    txt = re.sub(r"#", "\U000025ab\U0000fe0f", txt)
 
-    pattern = r"```(?!\w+)(.*?)\n```"
-    repl = r"```info\1\n```"
-    txt = re.sub(pattern, repl, txt, flags=re.DOTALL)
+    pattern = r"(?<=.)```[a-zA-Z0-9-_]*"
+
+    def replacer(match):
+        return "\n" + match.group(0)
+
+    txt = re.sub(pattern, replacer, txt)
+
+    write_log(txt, "clean_text.log")
 
     return txt

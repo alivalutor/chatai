@@ -15,6 +15,7 @@ def size_parts(block):
     else:
         k = ceil(len(block) / max_length)
         size = len(block) // k
+
     return size
 
 
@@ -51,7 +52,7 @@ def split_code(txt_split, block, lang_pre):
 
 
 def split_by_length(blocks):
-    pattern_lang = re.compile(r"^```(\S+)")
+    pattern_lang = re.compile(r"^```")
     txt_split = []
 
     for block in blocks:
@@ -64,5 +65,7 @@ def split_by_length(blocks):
                 txt_split = split_code(txt_split, block, lang_pre)
             else:
                 txt_split = split_txt(txt_split, block)
+
     write_log(txt_split, "blocks.log")
+
     return txt_split

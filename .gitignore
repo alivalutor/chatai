@@ -133,4 +133,5 @@ dmypy.json
 # My files
 test0.py
 test1.py
+test0.md
 api/openrouterai.py

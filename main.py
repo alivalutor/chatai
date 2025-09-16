@@ -37,6 +37,7 @@ def echo_all(message):
                 bot.reply_to(message, "ИИ перегружен, попробуй позже.")
         except Exception as e:
             bot.reply_to(message, f"Ошибка при отправке сообщения от ИИ:'\n'{str(e)}")
+            break
 
 
 if __name__ == "__main__":
