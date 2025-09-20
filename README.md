@@ -66,3 +66,56 @@
 - Для поддержки новых возможностей (например, истории, проверки пользователя, логирования, устойчивости к ошибкам) создавайте отдельные сервисные модули
 - Следуйте структуре и паттернам, описанным в коде проекта
 - Для новых интеграций с AI создавайте отдельные модули в `api/`
+
+## Мультимодальные запросы (текст + фото)
+В проекте реализована поддержка мультимодальных запросов через кастомный обработчик `handlers_custom/gemini_handler.py`.
+Для передачи текста и изображения в Gemini API используется функция:
+
+```python
+def add_message_part(message):
+    current_message_parts = []
+    if len(message) == 1:
+        current_message_parts.append({"text": message[0]})
+    elif len(message) == 2:
+        current_message_parts.append({"text": message[0]})
+        current_message_parts.append({
+            "inline_data": {
+                "mime_type": "image/jpeg",
+                "data": message[1],
+            }
+        })
+    return current_message_parts
+```
+Пример использования:
+```python
+# Для текстового запроса:
+parts = add_message_part([message.text])
+# Для запроса с фото:
+parts = add_message_part([caption, img_base64])
+```
+
+## Обработка ошибок и устойчивость
+- Все вызовы Telegram API (`send_message`, `send_document`) и Gemini API оборачиваются в `try-except` с повторными попытками при ServiceUnavailable.
+- Ошибки Markdown (400) предотвращаются через правила форматирования (см. META_PROMPT в config.py).
+- Логирование ошибок и ответов ИИ ведётся в папке `logs/`.
+
+## Расширение функционала
+- Для новых команд создавайте обработчики в `handlers_custom/`.
+- Для поддержки мультимодальности используйте паттерн parts (text, image).
+- Для сложных сценариев диалога используйте сервисы из `services/` (история, разбиение текста, очистка).
+
+## История диалога и контекст
+- История сообщений пользователя хранится в `services/chat_context.py` (user_histories).
+- Контекст для ИИ формируется как список parts, включая META_PROMPT и предыдущие сообщения.
+
+## Пример кастомного обработчика (текст + фото)
+```python
+@bot.message_handler(content_types=["photo"])
+def handle_photo_message(message):
+    ...
+    img_base64 = ... # преобразование фото
+    parts = add_message_part([message.caption, img_base64])
+    context = context_for_ai(message.from_user.id, parts)
+    result = gemini.request_ai(message.from_user.id, context)
+    send_message(message, result)
+```

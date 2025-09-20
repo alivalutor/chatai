@@ -35,15 +35,21 @@
   - python-dotenv
   - os
 
+
 ## handlers/
 - handlers_default/start.py: Обработчик команды /start, приветствует пользователя.
 - handlers_default/help.py: Обработчик команды /help, выводит список доступных команд.
+- handlers_custom/gemini_handler.py: Кастомный обработчик для мультимодальных запросов (текст + фото), формирует parts для Gemini API, реализует обработку ошибок, поддерживает историю диалога.
 - handlers_custom/: Папка для пользовательских обработчиков (может быть пуста или содержать кастомные команды).
 
   **Зависимости:**
   - loader.py (инициализация бота)
   - config_data/config.py
-  - keyboards.reply.reply_keyboards
+  - services/chat_context.py
+  - services/user_check.py
+  - api/gemini.py
+  - PIL (обработка изображений)
+
 
 ## services/
 - block_splitter.py: Разделяет длинные текстовые блоки на части, учитывая лимит Telegram (~3900 символов), поддерживает разбиение кода и текста, логирует результат.
@@ -94,20 +100,24 @@
 
 ```mermaid
 graph TD;
-    main.py -->|вызывает| api/gemini.py
-    main.py -->|использует| config_data/config.py
-    main.py -->|использует| services/chat_context.py
-    main.py -->|использует| services/user_check.py
-    api/gemini.py -->|использует| services/chat_context.py
-    api/gemini.py -->|использует| services/logging.py
-    api/gemini.py -->|использует| services/text_cleaner.py
-    api/gemini.py -->|использует| services/text_splitter.py
-    api/gemini.py -->|использует| services/block_splitter.py
-    services/block_splitter.py -->|использует| services/logging.py
-    services/text_cleaner.py -->|использует| services/logging.py
-    services/text_splitter.py -->|использует| services/logging.py
-    services/chat_context.py -->|использует| config_data/config.py
-    services/user_check.py -->|использует| config_data/config.py
-    handlers_default/start.py -->|использует| loader.py
-    handlers_default/help.py -->|использует| config_data/config.py
+  main.py -->|вызывает| api/gemini.py
+  main.py -->|использует| config_data/config.py
+  main.py -->|использует| services/chat_context.py
+  main.py -->|использует| services/user_check.py
+  main.py -->|использует| handlers_custom/gemini_handler.py
+  api/gemini.py -->|использует| services/chat_context.py
+  api/gemini.py -->|использует| services/logging.py
+  api/gemini.py -->|использует| services/text_cleaner.py
+  api/gemini.py -->|использует| services/text_splitter.py
+  api/gemini.py -->|использует| services/block_splitter.py
+  services/block_splitter.py -->|использует| services/logging.py
+  services/text_cleaner.py -->|использует| services/logging.py
+  services/text_splitter.py -->|использует| services/logging.py
+  services/chat_context.py -->|использует| config_data/config.py
+  services/user_check.py -->|использует| config_data/config.py
+  handlers_default/start.py -->|использует| loader.py
+  handlers_default/help.py -->|использует| config_data/config.py
+  handlers_custom/gemini_handler.py -->|использует| api/gemini.py
+  handlers_custom/gemini_handler.py -->|использует| services/chat_context.py
+  handlers_custom/gemini_handler.py -->|использует| services/user_check.py
 ```

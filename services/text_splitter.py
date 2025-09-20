@@ -1,5 +1,4 @@
 import re
-
 from services.logging import write_log
 
 

@@ -21,7 +21,6 @@ def clean_text(text):
     txt = re.sub(r"####", "\U00002022", txt)
     txt = re.sub(r"###", "\U00002022", txt)
     txt = re.sub(r"##", "\U000025aa\U0000fe0f", txt)
-    # txt = re.sub(r"#", "\U000025ab\U0000fe0f", txt)
 
     pattern = r"(?<=.)```[a-zA-Z0-9-_]*"
 

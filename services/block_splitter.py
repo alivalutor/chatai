@@ -1,6 +1,5 @@
 import re
 from math import ceil
-
 from services.logging import write_log
 
 MAX_MESSAGE_LENGTH = 3900

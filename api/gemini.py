@@ -1,14 +1,10 @@
-from google import genai
-
+from loader import client
 from google.api_core.exceptions import ServiceUnavailable, BadRequest, Unauthenticated
-from config_data.config import GEMINI_API_KEY
 from services.chat_context import add_ai_response_to_history
 from services.logging import write_log
 from services.text_cleaner import clean_text
 from services.text_splitter import split_into_blocks
 from services.block_splitter import split_by_length
-
-client = genai.Client()
 
 
 def edit_markdown(text):
@@ -22,7 +18,8 @@ def edit_markdown(text):
 def request_ai(user_id, message):
     try:
         response = client.models.generate_content(
-            model="gemini-2.5-flash", contents=message
+            model="gemini-2.5-flash",
+            contents=message,
         )
         add_ai_response_to_history(user_id, response.text)
         write_log(response.text, "response.log")

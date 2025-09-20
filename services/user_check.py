@@ -1,7 +1,6 @@
 from config_data.config import USER_ID
 
 assert USER_ID is not None, "USER_ID должен быть инициализирован и иметь значение!"
-
 ALLOWED_USER_IDS = USER_ID.split(",")
 
 
