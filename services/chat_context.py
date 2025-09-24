@@ -27,4 +27,3 @@ def context_for_ai(user_id, user_message):
 
 def add_ai_response_to_history(user_id, ai_message):
     user_histories[user_id].append(ai_message)
-    print(user_histories)
