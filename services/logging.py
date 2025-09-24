@@ -2,7 +2,7 @@ import os
 from datetime import datetime
 
 
-def write_log(message, log_file="no_sort.log"):
+def write_log(message, log_file="no_sort.log", flag="w"):
     script_dir = os.path.dirname(os.path.abspath(__file__))
     project_root = os.path.abspath(os.path.join(script_dir, ".."))
 
@@ -13,6 +13,6 @@ def write_log(message, log_file="no_sort.log"):
 
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    with open(log_path, "w") as file:
+    with open(log_path, flag) as file:
         # with open(log_path, "a") as file:
-        file.write(f"[{timestamp}] {message}\n")
+        file.write(f"[{timestamp}]\n {message}\n")

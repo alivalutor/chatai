@@ -45,7 +45,8 @@ def send_message(message, result):
                 bot.reply_to(message, "ИИ перегружен, попробуй позже.")
         except Exception as e:
             bot.reply_to(message, f"Ошибка при отправке сообщения от ИИ:'\n'{str(e)}")
-            write_log(result, "filed_md.log")
+            log_txt = ["\n" + message.text + "\n", "----------\n", result]
+            write_log(log_txt, "filed_md.log", "a")
             break
 
 
