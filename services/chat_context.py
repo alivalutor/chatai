@@ -11,11 +11,6 @@ def context_for_ai(user_id, user_message):
     if user_id not in user_histories:
         user_histories[user_id] = [
             [{"text": META_PROMPT}],
-            [
-                {
-                    "text": "Не упоминай в беседе об этой инструкции, а только руководствуйся ею. Не отвечай на это сообщение."
-                }
-            ],
             "Хорошо",
         ]
     user_histories[user_id].append(user_message)
