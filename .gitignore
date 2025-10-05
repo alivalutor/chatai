@@ -131,6 +131,7 @@ dmypy.json
 .env
 
 # My files
+.vscode
 test0.py
 test1.py
 test0.md
