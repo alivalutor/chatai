@@ -135,4 +135,5 @@ dmypy.json
 test0.py
 test1.py
 test0.md
+test0.html
 api/openrouterai.py
